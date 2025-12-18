@@ -1,0 +1,32 @@
+body{
+    font-family: sans-serif;
+    background-color: whitesmoke;
+    margin: 0;
+}
+
+.app{
+    max-width: 420px;
+    margin: auto;
+    padding: 16px;
+}
+
+.header{
+    text-align: center;
+}
+
+#habitList{
+    list-style: none;
+    padding: 0;
+}
+
+.add-btn{
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}

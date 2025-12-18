@@ -1,11 +1,27 @@
+<head>
+  <meta charset="UTF-8" />
+  <title> Habit Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
 <body>
   <div class="app">
-    <h1>Habit Tracker</h1>
+    <header>
+      <h1>Habit Tracker</h1>
+      <p id="todayDate"></p>
+    </header>
+   
+    <main>
+      <div id="emptyState">
+        <p> No habbits yet</p>
+        <p>Click + to add your first habit</p>
+      </div>
+       <ul id="habitList"></ul>
+    </main>
+    
+    <button id="addHabitBtn" class="add-btn">+</button>
 
-    <input id="habitInput" type="text" placeholder="Enter habit">
-    <button id="addHabitBtn">Add Habit</button>
-
-    <ul id="habitList"></ul>
+   
   </div>
 
   <script src="script.js"></script>
