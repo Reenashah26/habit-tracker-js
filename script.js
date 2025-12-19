@@ -11,6 +11,22 @@ const habitDescInput = document.getElementById("habitDescInput");
 const emptyState = document.getElementById("emptyState");
 const habitList = document.getElementById('habitList');
 
+const completionSummary = document.getElementById("completionSummary");
+
+const overlay = document.getElementById("overlay");
+const bottomSheet = document.getElementById("bottomSheet");
+//overlay logic
+
+addHabitBtn.addEventListener("click", function(){
+overlay.style.display="block";
+bottomSheet.style.display="block";
+});
+
+overlay.addEventListener("click",function(){
+overlay.style.display="none";
+bottomSheet.style.display="none";
+});
+
 addHabitBtn.addEventListener("click", function(){
 addHabitSection.style.display="block";
 });
@@ -41,18 +57,41 @@ saveHabitBtn.addEventListener("click", function(){
 function renderHabits()
 {
     habitList.innerHTML="";
-    habits.forEach(function(habit)
+
+    let completedCount = 0;
+
+    habits.forEach(function(habit,index)
     {
         const li = document.createElement("li");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = habit.completed;
+
+        checkbox.addEventListener("change", function(){
+            habits[index].completed = checkbox.checked;
+            renderHabits();
+        });
+
         const title = document.createElement("strong");
         title.textContent= habit.name;
 
         const desc = document.createElement("p");
         desc.textContent= habit.description;
 
+        if(habit.completed)
+        {
+            li.style.opacity ="0.6";
+            title.style.textDecoration="line-through";
+            completedCount++;
+        }
+
+        li.appendChild(checkbox);
         li.appendChild(title);
         li.appendChild(desc);
 
         habitList.appendChild(li);
     });
+
+    completionSummary.textContent =`${completedCount} of ${habits.length} habits completed today`;
 }

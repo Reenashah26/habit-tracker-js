@@ -16,7 +16,10 @@
         <p> No habbits yet</p>
         <p>Click + to add your first habit</p>
       </div>
-       <ul id="habitList"></ul>
+
+      <p id="completionSummary"></p>
+
+      <ul id="habitList"></ul>
     </main>
 
     <section id="addHabitSection" style="display: none;">
@@ -37,6 +40,15 @@
 
    
   </div>
-
+  <!--Adding bottom sheet container -->
+  <div id="overlay" style="display: none;"></div>
+  <div id="bottomSheet" style="display: none;">
+    <h2>Add Habbit</h2>
+    
+    <input id="habitNameInput" type="text" placeholder="Habit Name" />
+    <textarea id="habbitDescInput" placeholder="Description (optional)"></textarea>
+    
+    <button id="saveHabitBtn">Save</button>
+  </div>
   <script src="script.js"></script>
 </body>
