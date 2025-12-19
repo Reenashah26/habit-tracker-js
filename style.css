@@ -45,3 +45,14 @@ body{
     padding: 16px;
     border-radius: 16px 16px 0 0;
 }
+button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -53,13 +53,13 @@ saveHabitBtn.addEventListener("click", function(){
         editingHabitIndex= null;
     }
     else{
-        const habbit ={
+        const habit ={
             name: name,
             description:description,
             completed:false
         };
 
-    habits.push(habbit);
+    habits.push(habit);
     }
     
     saveHabits();
@@ -103,6 +103,7 @@ function renderHabits()
         editbutton.style.marginLeft="10px";
 
         editbutton.addEventListener("click", function(){
+            if(habit.completed)return;
             editingHabitIndex = index;
             habitNameInput.value=habit.name;
             habitDescInput.value=habit.description;
@@ -118,6 +119,7 @@ function renderHabits()
             title.style.textDecoration="line-through";
             completedCount++;
             deletebutton.disabled=true;
+            editbutton.disabled=true;
         }
 
         
