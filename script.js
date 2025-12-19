@@ -5,7 +5,7 @@ const options = { weekday:"long", day:"numeric", month:"short"};
 todayDateE1.textContent = today.toLocaleDateString("en-In",options);
 
 // other variables
-const addHabitSection = document.getElementById("addHabitSection");
+//const addHabitSection = document.getElementById("addHabitSection");
 const saveHabitBtn = document.getElementById("saveHabitBtn");
 const habitNameInput =document.getElementById("habitNameInput");
 const habitDescInput = document.getElementById("habitDescInput");
@@ -27,15 +27,16 @@ overlay.addEventListener("click",function(){
 overlay.style.display="none";
 bottomSheet.style.display="none";
 });
-
+/*
 addHabitBtn.addEventListener("click", function(){
 addHabitSection.style.display="block";
 });
-
+*/
 
 let habits =[];
 
 saveHabitBtn.addEventListener("click", function(){
+    
     const name = habitNameInput.value.trim();
     const description = habitDescInput.value.trim();
     
@@ -50,7 +51,7 @@ saveHabitBtn.addEventListener("click", function(){
     habits.push(habbit);
     habitNameInput.value ="";
     habitDescInput.value ="";
-    addHabitSection.style.display="none";
+    //addHabitSection.style.display="none";
     emptyState.style.display="none";
 
     renderHabits();
@@ -80,17 +81,31 @@ function renderHabits()
 
         const desc = document.createElement("p");
         desc.textContent= habit.description;
+        
+        const deletebutton = document.createElement("button");
+        deletebutton.innerText="Delete";
+        deletebutton.style = 'margin-left:20px;';
 
         if(habit.completed)
         {
             li.style.opacity ="0.6";
             title.style.textDecoration="line-through";
             completedCount++;
+            deletebutton.disabled=true;
         }
+
+        
+        deletebutton.addEventListener("click", function(){
+            if(habit.completed) return;
+            habits.splice(index,1);
+            renderHabits();
+        });
+
 
         li.appendChild(checkbox);
         li.appendChild(title);
         li.appendChild(desc);
+        li.appendChild(deletebutton);
 
         habitList.appendChild(li);
     });
