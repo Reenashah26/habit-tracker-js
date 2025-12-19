@@ -14,14 +14,17 @@ const completionSummary = document.getElementById("completionSummary");
 const overlay = document.getElementById("overlay");
 const bottomSheet = document.getElementById("bottomSheet");
 let habits =[];
+
+let editingHabitIndex = null; //null → adding new habit, number → editing existing habit
+
 //Load habits on app start
 const savedHabits = localStorage.getItem("habits");
-
 if(savedHabits){
     habits=JSON.parse(savedHabits);
     emptyState.style.display="none";
     renderHabits();
 }
+
 //Persist habits with localStorage
 function saveHabits()
 {
@@ -43,13 +46,22 @@ saveHabitBtn.addEventListener("click", function(){
     
     if(name==="") return;
 
-    const habbit ={
-        name: name,
-        description:description,
-        completed:false
-    };
+    if(editingHabitIndex!==null){
+        //edit Mode
+        habits[editingHabitIndex].name = name;
+        habits[editingHabitIndex].description = description;
+        editingHabitIndex= null;
+    }
+    else{
+        const habbit ={
+            name: name,
+            description:description,
+            completed:false
+        };
 
     habits.push(habbit);
+    }
+    
     saveHabits();
     emptyState.style.display = "none";
     closeBottomSheet();    
@@ -86,6 +98,20 @@ function renderHabits()
         deletebutton.innerText="Delete";
         deletebutton.style = 'margin-left:20px;';
 
+        const editbutton = document.createElement("button");
+        editbutton.innerText="Edit";
+        editbutton.style.marginLeft="10px";
+
+        editbutton.addEventListener("click", function(){
+            editingHabitIndex = index;
+            habitNameInput.value=habit.name;
+            habitDescInput.value=habit.description;
+
+            overlay.style.display="block";
+            bottomSheet.style.display="block";
+            habitNameInput.focus();
+        });
+
         if(habit.completed)
         {
             li.style.opacity ="0.6";
@@ -102,11 +128,13 @@ function renderHabits()
             renderHabits();
         });
 
+        
 
         li.appendChild(checkbox);
         li.appendChild(title);
         li.appendChild(desc);
         li.appendChild(deletebutton);
+        li.appendChild(editbutton);
 
         habitList.appendChild(li);
     });
@@ -121,5 +149,6 @@ function closeBottomSheet()
   bottomSheet.style.display="none";
   habitNameInput.value = "";
   habitDescInput.value = "";
+  editingHabitIndex=null;
 
 }
