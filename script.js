@@ -14,6 +14,19 @@ const completionSummary = document.getElementById("completionSummary");
 const overlay = document.getElementById("overlay");
 const bottomSheet = document.getElementById("bottomSheet");
 let habits =[];
+//Load habits on app start
+const savedHabits = localStorage.getItem("habits");
+
+if(savedHabits){
+    habits=JSON.parse(savedHabits);
+    emptyState.style.display="none";
+    renderHabits();
+}
+//Persist habits with localStorage
+function saveHabits()
+{
+    localStorage.setItem("habits",JSON.stringify(habits));
+}
 
 addHabitBtn.addEventListener("click", function(){
     overlay.style.display="block";
@@ -37,9 +50,9 @@ saveHabitBtn.addEventListener("click", function(){
     };
 
     habits.push(habbit);
+    saveHabits();
     emptyState.style.display = "none";
-    closeBottomSheet();
-
+    closeBottomSheet();    
     renderHabits();
 });
 
@@ -59,6 +72,7 @@ function renderHabits()
         //Per-item event binding during render
         checkbox.addEventListener("change", function(){
             habits[index].completed = checkbox.checked;
+            saveHabits();
             renderHabits();
         });
 
@@ -84,6 +98,7 @@ function renderHabits()
         deletebutton.addEventListener("click", function(){
             if(habit.completed) return;
             habits.splice(index,1);
+            saveHabits();
             renderHabits();
         });
 
