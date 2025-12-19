@@ -4,6 +4,7 @@ const today = new Date();
 const options = { weekday:"long", day:"numeric", month:"short"};
 todayDateE1.textContent = today.toLocaleDateString("en-In",options);
 
+// other variables
 const addHabitSection = document.getElementById("addHabitSection");
 const saveHabitBtn = document.getElementById("saveHabitBtn");
 const habitNameInput =document.getElementById("habitNameInput");
@@ -33,6 +34,7 @@ addHabitSection.style.display="block";
 
 
 let habits =[];
+
 saveHabitBtn.addEventListener("click", function(){
     const name = habitNameInput.value.trim();
     const description = habitDescInput.value.trim();
@@ -67,7 +69,7 @@ function renderHabits()
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = habit.completed;
-
+        //Per-item event binding during render
         checkbox.addEventListener("change", function(){
             habits[index].completed = checkbox.checked;
             renderHabits();
