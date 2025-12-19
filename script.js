@@ -5,35 +5,23 @@ const options = { weekday:"long", day:"numeric", month:"short"};
 todayDateE1.textContent = today.toLocaleDateString("en-In",options);
 
 // other variables
-//const addHabitSection = document.getElementById("addHabitSection");
 const saveHabitBtn = document.getElementById("saveHabitBtn");
 const habitNameInput =document.getElementById("habitNameInput");
 const habitDescInput = document.getElementById("habitDescInput");
 const emptyState = document.getElementById("emptyState");
 const habitList = document.getElementById('habitList');
-
 const completionSummary = document.getElementById("completionSummary");
-
 const overlay = document.getElementById("overlay");
 const bottomSheet = document.getElementById("bottomSheet");
-//overlay logic
-
-addHabitBtn.addEventListener("click", function(){
-overlay.style.display="block";
-bottomSheet.style.display="block";
-});
-
-overlay.addEventListener("click",function(){
-overlay.style.display="none";
-bottomSheet.style.display="none";
-});
-/*
-addHabitBtn.addEventListener("click", function(){
-addHabitSection.style.display="block";
-});
-*/
-
 let habits =[];
+
+addHabitBtn.addEventListener("click", function(){
+    overlay.style.display="block";
+    bottomSheet.style.display="block";
+    habitNameInput.focus();
+    });
+
+overlay.addEventListener("click", closeBottomSheet);
 
 saveHabitBtn.addEventListener("click", function(){
     
@@ -49,10 +37,8 @@ saveHabitBtn.addEventListener("click", function(){
     };
 
     habits.push(habbit);
-    habitNameInput.value ="";
-    habitDescInput.value ="";
-    //addHabitSection.style.display="none";
-    emptyState.style.display="none";
+    emptyState.style.display = "none";
+    closeBottomSheet();
 
     renderHabits();
 });
@@ -111,4 +97,14 @@ function renderHabits()
     });
 
     completionSummary.textContent =`${completedCount} of ${habits.length} habits completed today`;
+}
+
+//Helper function
+function closeBottomSheet()
+{
+  overlay.style.display="none";
+  bottomSheet.style.display="none";
+  habitNameInput.value = "";
+  habitDescInput.value = "";
+
 }
