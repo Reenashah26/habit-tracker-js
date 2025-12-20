@@ -1,4 +1,6 @@
 //Show today's date
+let selectedDate = new Date().toISOString().split("T")[0];
+//let selectedDate = "2025-01-05";
 const todayDateE1 =document.getElementById("todayDate");
 const today = new Date();
 const options = { weekday:"long", day:"numeric", month:"short"};
@@ -56,7 +58,8 @@ saveHabitBtn.addEventListener("click", function(){
         const habit ={
             name: name,
             description:description,
-            completed:false
+            //completed:false,
+            completedDates: {}
         };
 
     habits.push(habit);
@@ -76,14 +79,20 @@ function renderHabits()
 
     habits.forEach(function(habit,index)
     {
+        //So, Old habits from localStorage don’t crash
+        if(!habit.completedDates){
+            habit.completedDates={};
+        }
         const li = document.createElement("li");
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.checked = habit.completed;
+        //checkbox.checked = habit.completed;
+        checkbox.checked = habit.completedDates?.[selectedDate]||false;
         //Per-item event binding during render
         checkbox.addEventListener("change", function(){
-            habits[index].completed = checkbox.checked;
+            //habits[index].completed = checkbox.checked;
+            habit.completedDates[selectedDate]=checkbox.checked;
             saveHabits();
             renderHabits();
         });
@@ -103,7 +112,7 @@ function renderHabits()
         editbutton.style.marginLeft="10px";
 
         editbutton.addEventListener("click", function(){
-            if(habit.completed)return;
+            if(habit.completedDates[selectedDate])return;
             editingHabitIndex = index;
             habitNameInput.value=habit.name;
             habitDescInput.value=habit.description;
@@ -113,7 +122,7 @@ function renderHabits()
             habitNameInput.focus();
         });
 
-        if(habit.completed)
+        if(habit.completedDates[selectedDate])
         {
             li.style.opacity ="0.6";
             title.style.textDecoration="line-through";
@@ -124,7 +133,7 @@ function renderHabits()
 
         
         deletebutton.addEventListener("click", function(){
-            if(habit.completed) return;
+            if(habit.completedDates[selectedDate]) return;
             habits.splice(index,1);
             saveHabits();
             renderHabits();
