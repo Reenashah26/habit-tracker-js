@@ -1,10 +1,13 @@
 //Show today's date
-let selectedDate = new Date().toISOString().split("T")[0];
+let selectedDate = new Date().toISOString().split("T")[0];    //"2025-01-06"
+// new Date().toISOString() --> "2025-12-20T08:42:15.123Z" 
 //let selectedDate = "2025-01-05";
 const todayDateE1 =document.getElementById("todayDate");
-const today = new Date();
+const today = new Date(); // 2025-12-20T08:42:15.123Z
 const options = { weekday:"long", day:"numeric", month:"short"};
-todayDateE1.textContent = today.toLocaleDateString("en-In",options);
+todayDateE1.textContent = new Date(selectedDate).toLocaleDateString("en-IN", options);
+
+//todayDateE1.textContent = today.toLocaleDateString("en-In",options);
 
 // other variables
 const saveHabitBtn = document.getElementById("saveHabitBtn");
@@ -25,6 +28,7 @@ if(savedHabits){
     habits=JSON.parse(savedHabits);
     emptyState.style.display="none";
     renderHabits();
+    renderWeekView();
 }
 
 //Persist habits with localStorage
@@ -79,6 +83,7 @@ function renderHabits()
 
     habits.forEach(function(habit,index)
     {
+        renderWeekView();
         //So, Old habits from localStorage don’t crash
         if(!habit.completedDates){
             habit.completedDates={};
@@ -162,4 +167,53 @@ function closeBottomSheet()
   habitDescInput.value = "";
   editingHabitIndex=null;
 
+}
+
+//Helper function Generate current week dates (JS)
+// generates ["2025-01-06", "2025-01-07", ...]
+function getWeekDates(baseDate)   // 20th Dec 2025  
+{
+    const dates=[];
+    const current = new Date(baseDate); // Sat Dec 20 2025
+    const day = current.getDay(); // 6 ; 0=> Sunday
+
+    const diff = current.getDate()-day+(day===0 ?-6: 1); //15 // Monday start
+    const monday = new Date(current.setDate(diff)); // Mon Dec 15 2025
+
+    for (let i =0; i<7 ; i++)
+    {
+        const d = new Date(monday);  // Mon Dec 15 2025
+        d.setDate(monday.getDate()+i); // Mon Dec 15 2025, Tue Dec 16 2025...
+        dates.push(d.toISOString().split("T")[0]);
+    }
+    return dates;
+}
+
+
+function renderWeekView()
+{
+    const weekView = document.getElementById("weekView");
+    weekView.innerHTML = "";
+    
+    const weekDates = getWeekDates(selectedDate);
+    weekDates.forEach(date=>{
+        const dayBtn = document.createElement("button");
+        dayBtn.innerText = new Date(date).toLocaleDateString("en-En",{
+            weekday:"short",
+            day :"numeric",
+        });
+
+        if(date ===selectedDate){
+            dayBtn.style.fontWeight="bold";
+        }
+
+        dayBtn.addEventListener("click", function(){
+            selectedDate= date; 
+            renderWeekView();
+            renderHabits();
+            updateHeaderDate();
+        });
+
+        weekView.appendChild(dayBtn);
+    });
 }
