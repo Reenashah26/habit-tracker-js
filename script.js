@@ -5,7 +5,7 @@ let selectedDate = new Date().toISOString().split("T")[0];    //"2025-01-06"
 const todayDateE1 =document.getElementById("todayDate");
 const today = new Date(); // 2025-12-20T08:42:15.123Z
 const options = { weekday:"long", day:"numeric", month:"short"};
-todayDateE1.textContent = new Date(selectedDate).toLocaleDateString("en-IN", options);
+//todayDateE1.textContent = new Date(selectedDate).toLocaleDateString("en-IN", options);
 
 //todayDateE1.textContent = today.toLocaleDateString("en-In",options);
 
@@ -27,6 +27,7 @@ const savedHabits = localStorage.getItem("habits");
 if(savedHabits){
     habits=JSON.parse(savedHabits);
     emptyState.style.display="none";
+    updateHeaderDate();
     renderHabits();
     renderWeekView();
 }
@@ -83,7 +84,6 @@ function renderHabits()
 
     habits.forEach(function(habit,index)
     {
-        renderWeekView();
         //So, Old habits from localStorage don’t crash
         if(!habit.completedDates){
             habit.completedDates={};
@@ -217,3 +217,11 @@ function renderWeekView()
         weekView.appendChild(dayBtn);
     });
 }
+//Helper function
+function updateHeaderDate() {
+  todayDateE1.textContent = new Date(selectedDate).toLocaleDateString(
+    "en-IN",
+    { weekday: "long", day: "numeric", month: "short" }
+  );
+}
+
